@@ -22,6 +22,12 @@ pipeline {
             }
         }
 
+        stage('Trivy Security Scan') {
+            steps {
+                sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest --timeout 15m image --scanners vuln devsecops-cicd-platform:1.0'
+            }
+        }
+
         stage('Run Application') {
             steps {
                 sh 'docker run --rm devsecops-cicd-platform:1.0'
